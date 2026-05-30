@@ -26,7 +26,7 @@ export default function CTASection() {
               prefetch={false}
               className="inline-flex items-center justify-center rounded-full border border-slate-900/10 bg-white/80 px-6 py-3 text-sm font-semibold text-slate-900 shadow-sm transition hover:-translate-y-0.5 hover:bg-white"
             >
-              Bandingkan katalog
+              Bandingkan Laptop
             </Link>
           </div>
         </div>

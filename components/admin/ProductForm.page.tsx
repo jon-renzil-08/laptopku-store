@@ -7,6 +7,7 @@ import { supabase } from "@/lib/supabase";
 import { toast } from "sonner";
 import ImageUpload from "@/components/admin/ImageUpload";
 import Spinner from "@/components/ui/Spinner";
+import MultiImageUpload from "./MultiImageUpload";
 
 // ── helpers & sub-components di LUAR fungsi utama ──
 
@@ -114,7 +115,6 @@ export default function ProductForm() {
     }, 500);
   }
 
-
   async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
     setLoading(true);
@@ -135,6 +135,7 @@ export default function ProductForm() {
       slug: String(formData.get("slug")),
       description: String(formData.get("description")),
       display: String(formData.get("display")),
+      images: JSON.parse(String(formData.get("images") || "[]")),
     };
 
     const { error } = await supabase.from("products").insert(product);
@@ -357,6 +358,7 @@ export default function ProductForm() {
           desc="Upload foto utama laptop. Foto bagus = pembeli lebih percaya."
         />
         <ImageUpload />
+        <MultiImageUpload />
       </div>
 
       {/* ── SECTION 4: Pengaturan ── */}
@@ -368,21 +370,25 @@ export default function ProductForm() {
         />
 
         <div className="grid gap-5 sm:grid-cols-2">
-          <Field label="Slug URL" required hint="Otomatis generate dari nama produk.">
-  <div className="relative">
-    <span className="absolute left-4 top-1/2 -translate-y-1/2 text-xs text-slate-400 select-none">
-      /products/
-    </span>
-    <input
-      name="slug"
-      value={slug}
-      readOnly                         
-      placeholder="otomatis dari nama..."
-      required
-      className={`${inputCls} pl-24 cursor-not-allowed bg-slate-100 text-slate-400 select-none`}
-    />
-  </div>
-</Field>
+          <Field
+            label="Slug URL"
+            required
+            hint="Otomatis generate dari nama produk."
+          >
+            <div className="relative">
+              <span className="absolute left-4 top-1/2 -translate-y-1/2 text-xs text-slate-400 select-none">
+                /products/
+              </span>
+              <input
+                name="slug"
+                value={slug}
+                readOnly
+                placeholder="otomatis dari nama..."
+                required
+                className={`${inputCls} pl-24 cursor-not-allowed bg-slate-100 text-slate-400 select-none`}
+              />
+            </div>
+          </Field>
 
           <Field
             label="Nomor WhatsApp"

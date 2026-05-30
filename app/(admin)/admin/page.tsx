@@ -22,7 +22,7 @@ export default async function AdminDashboardPage() {
   const productList = products ?? [];
 
   const totalProducts = productList.length;
-  const readyProducts = productList.filter((item) => item.status === "Ready");
+  const readyProducts = productList.filter((item) => item.status === "Tersedia");
   const soldProducts = productList.filter((item) => item.status === "Sold");
 
   const newProductsThisMonth = productList.filter(
@@ -60,12 +60,12 @@ export default async function AdminDashboardPage() {
       desc: formatPrice(monthlyRevenue),
     },
     {
-      label: "Produk Ready",
+      label: "Produk Tersedia",
       value: readyProducts.length,
       desc: "Siap dijual",
     },
     {
-      label: "Nilai Stok Ready",
+      label: "Nilai Stok Tersedia",
       value: formatPrice(inventoryValue),
       desc: "Estimasi inventory",
     },
@@ -168,7 +168,7 @@ export default async function AdminDashboardPage() {
                         : "bg-emerald-500/10 text-emerald-300"
                     }`}
                   >
-                    {product.status ?? "Ready"}
+                    {product.status ?? "Tersedia"}
                   </span>
 
                   <p className="font-black text-orange-300">
@@ -192,7 +192,7 @@ export default async function AdminDashboardPage() {
 
           <div className="mt-6 space-y-4">
             <div className="rounded-2xl bg-emerald-500/10 p-4">
-              <p className="text-sm text-emerald-300">Ready Rate</p>
+              <p className="text-sm text-emerald-300">Tersedia Rate</p>
               <p className="mt-2 text-2xl font-black text-white">
                 {totalProducts > 0
                   ? Math.round((readyProducts.length / totalProducts) * 100)

@@ -7,6 +7,7 @@ import { toast } from "sonner";
 import ImageUpload from "./ImageUpload";
 import Spinner from "../ui/Spinner";
 import Image from "next/image";
+import MultiImageUpload from "./MultiImageUpload";
 
 // ── helpers ──────────────────────────────────────────
 
@@ -101,6 +102,7 @@ type Product = {
   condition: string;
   status: string;
   image_url: string;
+  images: string[];
   whatsapp: string;
   slug: string;
   description: string;
@@ -147,6 +149,7 @@ export default function EditProductForm({ product }: { product: Product }) {
       slug,
       description: String(formData.get("description")),
       display: String(formData.get("display")),
+      images: JSON.parse(String(formData.get("images") || "[]")),
     };
 
     const { error } = await supabase
@@ -290,6 +293,7 @@ export default function EditProductForm({ product }: { product: Product }) {
         )}
 
         <ImageUpload defaultValue={product.image_url} />
+        <MultiImageUpload defaultValue={product.images ?? []} />
       </div>
 
       {/* ── SECTION 4: Pengaturan ── */}

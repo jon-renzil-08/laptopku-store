@@ -71,7 +71,7 @@ export default function ProductCatalog() {
     () => ["All", ...new Set(products.map((product) => product.storage))],
     [products],
   );
-  const statuses = ["All", "Ready", "Sold"];
+  const statuses = ["All", "Tersedia", "Sold"];
 
   const priceRanges = [
     { label: "Semua Harga", value: "All" },
@@ -413,7 +413,7 @@ export default function ProductCatalog() {
                     </span>
                     <span
                       className={`rounded-full px-3 py-1 text-xs font-bold ${
-                        product.status === "Ready"
+                        product.status === "Tersedia"
                           ? "bg-emerald-50 text-emerald-700"
                           : "bg-red-50 text-red-700"
                       }`}

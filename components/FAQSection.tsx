@@ -1,8 +1,8 @@
 const faqs = [
   {
-    question: "Apakah laptop ready semua?",
+    question: "Apakah laptop tersedia semua?",
     answer:
-      "Status produk bisa dilihat di setiap card. Jika tertulis Ready berarti stok tersedia, jika Sold berarti sudah terjual.",
+      "Status produk bisa dilihat di setiap card. Jika tertulis Tersedia berarti stok tersedia, jika Sold berarti sudah terjual.",
   },
   {
     question: "Apakah bisa tanya kondisi detail lewat WhatsApp?",

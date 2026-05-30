@@ -3,14 +3,14 @@ import ProductCatalog from "@/components/ProductCatalog";
 import WhatsAppButton from "@/components/WhatsAppButton";
 
 export const metadata: Metadata = {
-  title: "Katalog Laptop Bekas - Laptopku Store",
+  title: " Laptop Bekas - Laptopku Store",
   description:
-    "Lihat katalog laptop bekas berkualitas dengan spesifikasi jelas, kondisi transparan, dan harga terbaik.",
+    "Lihat  laptop bekas berkualitas dengan spesifikasi jelas, kondisi transparan, dan harga terbaik.",
   alternates: {
     canonical: "/products",
   },
   openGraph: {
-    title: "Katalog Laptop Bekas - Laptopku Store",
+    title: " Laptop Bekas - Laptopku Store",
     description:
       "Bandingkan laptop bekas siap pakai berdasarkan spesifikasi, kondisi, status stok, dan harga.",
     url: "/products",
@@ -23,7 +23,7 @@ export default function ProductsPage() {
     <main className="mx-auto max-w-7xl px-4 py-14 sm:py-16">
       <section className="max-w-3xl">
         <span className="text-sm font-bold text-[#b95410]">
-          Katalog Produk
+          Laptop Bekas Berkualitas, Harga Terjangkau
         </span>
 
         <h1 className="mt-3 text-4xl font-black text-slate-950 md:text-5xl">

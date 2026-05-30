@@ -10,7 +10,7 @@ const buyingSteps = [
   {
     title: "Cek stok dan kondisi",
     description:
-      "Pilih produk ready, lalu konfirmasi kondisi fisik, performa, baterai, dan kelengkapan.",
+      "Pilih produk tersedia, lalu konfirmasi kondisi fisik, performa, baterai, dan kelengkapan.",
   },
   {
     title: "Bandingkan opsi terbaik",
@@ -25,7 +25,7 @@ const buyingSteps = [
 ];
 
 const checkoutChecks = [
-  "Status produk masih Ready",
+  "Status produk masih Tersedia",
   "Kondisi sesuai label produk",
   "Charger dan kelengkapan dikonfirmasi",
   "Garansi atau masa cek sudah jelas",

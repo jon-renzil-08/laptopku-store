@@ -15,7 +15,7 @@ export default async function HeroSection() {
   }
 
   const availableProducts = products.filter(
-    (product) => product.status === "Ready",
+    (product) => product.status === "Tersedia",
   ).length;
 
   const brandNames = Array.from(
@@ -23,7 +23,7 @@ export default async function HeroSection() {
   );
 
   const heroStats = [
-    [`${availableProducts}+`, "Produk ready"],
+    [`${availableProducts}+`, "Produk tersedia"],
     [`${brandNames.length} Brand`, "Pilihan populer"],
     ["Fast", "Konsultasi WhatsApp"],
   ];
@@ -69,7 +69,7 @@ export default async function HeroSection() {
               prefetch={false}
               className="inline-flex items-center justify-center rounded-full bg-[#b95410] px-7 py-3.5 text-sm font-bold text-white shadow-[0_16px_36px_rgba(185,84,16,0.30)] transition duration-300 hover:-translate-y-0.5 hover:bg-[#9a430c]"
             >
-              Lihat katalog{" "}
+              Lihat Laptop{" "}
               <span aria-hidden="true" className="ml-2">
                 →
               </span>
@@ -113,7 +113,7 @@ export default async function HeroSection() {
             <span className="hero-orbit-dot" />
             <div>
               <p className="text-[0.65rem] font-black uppercase tracking-[0.18em] text-slate-500">
-                QC ready
+                QC tersedia
               </p>
               <p className="mt-1 text-sm font-black text-slate-900">
                 Baterai, keyboard, port

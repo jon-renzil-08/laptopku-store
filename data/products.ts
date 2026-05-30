@@ -12,7 +12,7 @@ export const products: Product[] = [
     storage: "256GB SSD",
     display: "13.3 inch Retina",
     condition: "Mulus",
-    status: "Ready",
+    status: "Tersedia",
     image: "/products/macbook-air-m1-2020.jpg",
     description:
       "MacBook Air M1 2020 kondisi mulus, performa kencang, baterai awet, cocok untuk kerja, kuliah, desain ringan, dan kebutuhan harian.",
@@ -28,7 +28,7 @@ export const products: Product[] = [
     storage: "512GB SSD",
     display: "14 inch Full HD",
     condition: "Normal",
-    status: "Ready",
+    status: "Tersedia",
     image: "/products/lenovo-thinkpad-x1-carbon.jpg",
     description:
       "ThinkPad X1 Carbon dengan body ringan, keyboard nyaman, performa stabil, cocok untuk kerja kantor, bisnis, dan produktivitas.",
@@ -44,7 +44,7 @@ export const products: Product[] = [
     storage: "512GB SSD",
     display: "14 inch Full HD",
     condition: "Mulus",
-    status: "Ready",
+    status: "Tersedia",
     image: "/products/asus-vivobook-14-ryzen-5.jpg",
     description:
       "ASUS VivoBook 14 dengan Ryzen 5, desain modern, performa responsif, cocok untuk pelajar, kerja online, dan multitasking ringan.",
