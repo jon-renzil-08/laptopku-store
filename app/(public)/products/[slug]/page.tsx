@@ -246,7 +246,7 @@ export default async function ProductDetailPage({
           <div className="mt-7 flex flex-col gap-3 sm:flex-row">
            <WhatsAppButton
   productName={product.name}
-  productUrl={`https://laptopku.store/products/${product.slug}`}
+  productUrl={`https://laptopku-store.vercel.app/products/${product.slug}`}
 />
 
             <Link
@@ -330,6 +330,7 @@ export default async function ProductDetailPage({
           <div className="mt-6">
             <WhatsAppButton
               productName={product.name}
+              productUrl={`https://laptopku-store.vercel.app/products/${product.slug}`}
               className="w-full shadow-none"
             />
           </div>
@@ -383,7 +384,7 @@ export default async function ProductDetailPage({
       )}
 
       {/* ── Sticky Bottom Bar — mobile only ── */}
-      <StickyBar productName={product.name} price={formatPrice(product.price)} />
+      <StickyBar productName={product.name} price={formatPrice(product.price)} productSlug={product.slug} />
     </main>
   );
 }
