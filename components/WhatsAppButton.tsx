@@ -57,15 +57,24 @@ export default function WhatsAppButton({
   size = "md",
 }: WhatsAppButtonProps) {
   const message = [
-    "Halo, Admin Laptopku Store!",
-    "",
-    `Saya tertarik dengan ${productName}.`,
-    productUrl ? `Link produk: ${productUrl}` : "",
-    "",
-    "Apakah produk ini masih tersedia?",
-  ]
-    .filter(Boolean)
-    .join("\n");
+  "👋 *Halo Admin Laptopku Store*",
+  "",
+  "Saya tertarik dengan laptop berikut:",
+  "",
+  `💻 *${productName}*`,
+  productUrl ? `🔗 ${productUrl}` : "",
+  "",
+  "Mohon informasi terkait:",
+  "",
+  "✅ Apakah masih tersedia?",
+  "✅ Kondisi fisik laptop",
+  "✅ Kelengkapan unit",
+  "✅ Garansi (jika tersedia)",
+  "",
+  "Terima kasih 🙏",
+]
+  .filter(Boolean)
+  .join("\n");
 
   return (
       <a
