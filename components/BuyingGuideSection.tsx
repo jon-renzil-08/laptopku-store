@@ -1,5 +1,5 @@
 import Link from "next/link";
-import WhatsAppButton from "@/components/WhatsAppButton";
+import WhatsAppGeneral from "@/components/WhatsAppGeneral";
 
 const buyingSteps = [
   {
@@ -94,13 +94,13 @@ export default function BuyingGuideSection() {
           </div>
 
           <div className="mt-6 flex flex-col gap-3">
-            <WhatsAppButton className="w-full" />
+            <WhatsAppGeneral className="w-full" />
             <Link
               href="/products"
               prefetch={false}
               className="inline-flex items-center justify-center rounded-full border border-slate-900/10 bg-white px-6 py-3 text-sm font-bold text-slate-900 shadow-sm transition hover:-translate-y-0.5 hover:bg-orange-50 hover:text-[#b95410]"
             >
-              Cek katalog
+              Cek Laptop Tersedia
             </Link>
           </div>
         </aside>

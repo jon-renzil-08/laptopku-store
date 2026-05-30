@@ -87,9 +87,9 @@ export default function HeroCarousel({ products }: Props) {
             alt={product.name}
             fill
             priority
-            unoptimized
+            loading="eager"
             quality={75}
-            sizes="(max-width: 1024px) 100vw, 520px"
+            sizes="100"
             className={`hero-product-image object-cover transition-all duration-300 group-hover:scale-105 ${
               animating ? "opacity-0 scale-95" : "opacity-100 scale-100"
             }`}

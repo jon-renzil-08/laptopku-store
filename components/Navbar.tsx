@@ -23,7 +23,7 @@ export default function Navbar() {
           className="shrink-0 text-base font-black text-slate-950 sm:text-lg"
           aria-label="Laptopku Store homepage"
         >
-          Laptopku<span className="text-[#b95410]">Store</span>
+          Laptopku<span className="text-[#b95410]">Store</span>Alva
         </Link>
 
         {/* Search desktop */}

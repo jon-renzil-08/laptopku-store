@@ -147,7 +147,8 @@ export default async function AdminDashboardPage() {
                       src={product.image_url}
                       alt={product.name}
                       fill
-                      unoptimized
+                     
+                       sizes="64px"
                       className="object-cover"
                     />
                   </div>

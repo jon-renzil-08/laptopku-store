@@ -284,7 +284,7 @@ export default function EditProductForm({ product }: { product: Product }) {
         {/* Preview foto saat ini */}
         {product.image_url && (
           <div className="flex items-center gap-4 rounded-xl border border-slate-200 bg-slate-50 p-3">
-            <Image src={product.image_url} alt={product.name} width={96} height={64} unoptimized className="rounded-lg object-cover" />
+            <Image src={product.image_url} loading="eager" alt={product.name} width={96} height={64} unoptimized className="rounded-lg object-cover" />
             <div>
               <p className="text-xs font-bold text-slate-700">Foto saat ini</p>
               <p className="mt-0.5 text-xs text-slate-400">Upload foto baru untuk mengganti</p>

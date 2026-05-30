@@ -53,7 +53,8 @@ export default function ProductMarquee({ products }: Props) {
           src={product.image_url}
           alt={product.name}
           fill
-          unoptimized
+           sizes="64px"
+            quality={60}
           className="object-cover transition duration-500 group-hover:scale-105"
         />
       </div>

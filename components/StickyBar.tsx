@@ -1,15 +1,19 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import WhatsAppButton from "@/components/WhatsAppButton";
+import WhatsAppStickyBar from "@/components/WhatsAppStickyBar";
 
 interface StickyBarProps {
   productName: string;
   price: string;
-  productSlug: string;
+  slug: string;
 }
 
-export default function StickyBar({ productName, price, productSlug }: StickyBarProps) {
+export default function StickyBar({
+  productName,
+  price,
+  slug,
+}: StickyBarProps) {
   const [visible, setVisible] = useState(false);
 
   useEffect(() => {
@@ -36,10 +40,10 @@ export default function StickyBar({ productName, price, productSlug }: StickyBar
           </p>
           <p className="text-sm font-black text-[#b95410]">{price}</p>
         </div>
-        <WhatsAppButton
+        <WhatsAppStickyBar
           productName={productName}
-          productUrl={`https://laptopku-store.vercel.app/products/${productSlug}`}
-          className="flex-shrink-0 px-5 py-2.5 text-sm animate-bounce-soft"
+          productUrl={`https://laptopku-store.vercel.app/products/${slug}`}
+          className="shadow-none"
         />
       </div>
     </div>

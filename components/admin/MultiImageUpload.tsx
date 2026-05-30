@@ -96,7 +96,9 @@ export default function MultiImageUpload({
                   src={url}
                   alt="Product gallery"
                   fill
-                  unoptimized
+                  sizes="64px"
+                    quality={60}
+                    
                   className="object-cover"
                 />
               </div>

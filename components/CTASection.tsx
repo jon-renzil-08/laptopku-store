@@ -1,5 +1,5 @@
 import Link from "next/link";
-import WhatsAppButton from "@/components/WhatsAppButton";
+import WhatsAppGeneral from "@/components/WhatsAppGeneral";
 
 export default function CTASection() {
   return (
@@ -20,7 +20,7 @@ export default function CTASection() {
           </div>
 
           <div className="flex flex-col gap-3 sm:flex-row lg:flex-col">
-            <WhatsAppButton className="w-full sm:w-auto" />
+            <WhatsAppGeneral className="w-full sm:w-auto" />
             <Link
               href="/products"
               prefetch={false}

@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import ProductCatalog from "@/components/ProductCatalog";
-import WhatsAppButton from "@/components/WhatsAppButton";
+import WhatsAppGeneral from "@/components/WhatsAppGeneral";
 
 export const metadata: Metadata = {
   title: " Laptop Bekas - Laptopku Store",
@@ -43,10 +43,10 @@ export default function ProductsPage() {
           </p>
           <p className="mt-1 text-sm leading-6 text-slate-600">
             Kirim budget dan kebutuhanmu. Admin bisa bantu pilihkan opsi yang
-            paling masuk akal dari katalog.
+            paling masuk akal dari laptop yang kamu inginkan.
           </p>
         </div>
-        <WhatsAppButton className="w-full md:w-auto" />
+        <WhatsAppGeneral className="w-full md:w-auto" />
       </section>
 
       <ProductCatalog />

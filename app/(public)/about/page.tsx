@@ -36,7 +36,7 @@ export default function AboutPage() {
     <main className="mx-auto max-w-7xl w-full px-4 py-14 sm:py-16">
       <section className="max-w-3xl">
         <span className="text-sm font-bold text-[#b95410]">
-          About Laptopku Store
+          About Laptopku Store Alva
         </span>
 
         <h1 className="mt-3 text-4xl font-black text-slate-950 md:text-5xl">

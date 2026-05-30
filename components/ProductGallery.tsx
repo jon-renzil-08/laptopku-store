@@ -31,9 +31,9 @@ export default function ProductGallery({
           width={1000}
           height={700}
           priority
-          unoptimized
+          loading="eager"
           quality={82}
-          sizes="(max-width: 1024px) 100vw, 50vw"
+          sizes="64px"
           className="h-[360px] w-full object-cover transition duration-500 sm:h-[460px]"
         />
 
@@ -76,7 +76,9 @@ export default function ProductGallery({
                     src={image}
                     alt={`${productName} image ${index + 1}`}
                     fill
-                    unoptimized
+                    loading="eager"
+                    quality={60}
+                    sizes="(max-width: 640px) 25vw, 20vw)"
                     className="object-cover transition duration-300 hover:scale-105"
                   />
                 </button>

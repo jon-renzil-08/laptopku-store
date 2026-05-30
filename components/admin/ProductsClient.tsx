@@ -134,7 +134,8 @@ export default function ProductsClient({ products }: Props) {
                           src={product.image_url}
                           alt={product.name}
                           fill
-                          unoptimized
+                          loading="eager"
+                          sizes="64px"
                           className="object-cover"
                         />
                       </div>
