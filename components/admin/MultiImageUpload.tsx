@@ -38,9 +38,7 @@ export default function MultiImageUpload({
         continue;
       }
 
-      const { data } = supabase.storage
-        .from("products")
-        .getPublicUrl(filePath);
+      const { data } = supabase.storage.from("products").getPublicUrl(filePath);
 
       uploadedUrls.push(data.publicUrl);
     }
@@ -97,8 +95,6 @@ export default function MultiImageUpload({
                   alt="Product gallery"
                   fill
                   sizes="64px"
-                    quality={60}
-                    
                   className="object-cover"
                 />
               </div>

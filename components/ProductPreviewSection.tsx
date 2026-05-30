@@ -27,8 +27,8 @@ export default async function ProductPreviewSection() {
           </h2>
 
           <p className="mt-4 max-w-xl leading-7 text-slate-600">
-            Pilihan teratas dengan spesifikasi ringkas, foto produk, status stok,
-            dan harga yang mudah dibandingkan.
+            Pilihan teratas dengan spesifikasi ringkas, foto produk, status
+            stok, dan harga yang mudah dibandingkan.
           </p>
         </div>
 
@@ -53,7 +53,6 @@ export default async function ProductPreviewSection() {
                 alt={product.name}
                 width={900}
                 height={600}
-                quality={60}
                 loading="eager"
                 sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
                 className="h-56 w-full object-cover transition duration-500 group-hover:scale-105"

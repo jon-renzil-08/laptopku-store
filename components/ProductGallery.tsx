@@ -77,7 +77,6 @@ export default function ProductGallery({
                     alt={`${productName} image ${index + 1}`}
                     fill
                     loading="eager"
-                    quality={60}
                     sizes="(max-width: 640px) 25vw, 20vw)"
                     className="object-cover transition duration-300 hover:scale-105"
                   />
