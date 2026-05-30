@@ -431,7 +431,7 @@ export default function LoginForm() {
                 Admin Panel
               </div>
               <h1 className="text-3xl font-black text-slate-900">
-                Selamat datang! 👋
+                Selamat datang! Alva 👋
               </h1>
               <p className="mt-2 text-sm text-slate-500">
                 Masukkan kredensial kamu untuk lanjut ke dashboard.
@@ -540,8 +540,8 @@ export default function LoginForm() {
 
             {/* Footer */}
             <p className="fade-5 mt-8 text-center text-xs text-slate-400">
-              Laptopku &copy; {new Date().getFullYear()} &middot; Admin Panel
-              &middot; Bali, Indonesia 🌴
+              Laptopku Store Alva &copy; {new Date().getFullYear()} &middot; Admin Panel
+              &middot; Nias, Gunungsitoli Utara, Tetehosi Afia 🌴
             </p>
           </div>
         </div>

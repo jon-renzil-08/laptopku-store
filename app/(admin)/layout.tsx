@@ -44,7 +44,7 @@ function SidebarContent({ onClose }: { onClose?: () => void }) {
           </svg>
         </div>
         <span className="text-lg font-black text-slate-900">
-          Laptopku<span className="text-[#b95410]">.</span>
+          Store Alva<span className="text-[#b95410]">.</span>
         </span>
       </Link>
 
@@ -161,7 +161,7 @@ export default function AdminSidebar({ children }: { children: React.ReactNode }
 
               <div>
                 <p className="text-sm font-black text-slate-900">Admin Dashboard</p>
-                <p className="text-xs text-slate-400">Laptopku Store</p>
+                <p className="text-xs text-slate-400">Laptopku Store Alva</p>
               </div>
             </div>
 
