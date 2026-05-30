@@ -1,5 +1,8 @@
 "use client";
 
+export const dynamic = "force-dynamic";
+export const revalidate = 0;
+
 import Image from "next/image";
 import Link from "next/link";
 import { formatPrice } from "@/lib/formatPrice";
@@ -19,7 +22,7 @@ type Props = {
 };
 
 export default function ProductMarquee({ products }: Props) {
-  const items = [...products, ...products, ...products];
+  const items = [...products];
 
   return (
     <div className="relative mx-auto mt-32 max-w-7xl overflow-hidden rounded-[2rem] border border-transparent bg-transparent p-3 ">
