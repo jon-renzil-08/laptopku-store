@@ -1,0 +1,21 @@
+export type Product = {
+  id: number;
+  slug: string;
+  name: string;
+  brand: string;
+  price: number;
+  processor: string;
+  ram: string;
+  storage: string;
+  display: string;
+  condition: string;
+  status: string;
+  image: string;
+  description: string;
+  warranty?: string;
+  location?: string;
+  battery_health?: string;
+  included_items?: string[];
+  created_at?: string;
+  updated_at?: string;
+};

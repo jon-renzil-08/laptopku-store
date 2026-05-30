@@ -1,0 +1,68 @@
+import { Product } from "@/types/product";
+
+export const products: Product[] = [
+	{
+    id: 1,
+    slug: "macbook-air-m1-2020",
+    name: "MacBook Air M1 2020",
+    brand: "Apple",
+    price: 8500000,
+    processor: "Apple M1",
+    ram: "8GB",
+    storage: "256GB SSD",
+    display: "13.3 inch Retina",
+    condition: "Mulus",
+    status: "Ready",
+    image: "/products/macbook-air-m1-2020.jpg",
+    description:
+      "MacBook Air M1 2020 kondisi mulus, performa kencang, baterai awet, cocok untuk kerja, kuliah, desain ringan, dan kebutuhan harian.",
+  },
+  {
+    id: 2,
+    slug: "lenovo-thinkpad-x1-carbon",
+    name: "Lenovo ThinkPad X1 Carbon",
+    brand: "Lenovo",
+    price: 7200000,
+    processor: "Intel Core i7 Gen 8",
+    ram: "16GB",
+    storage: "512GB SSD",
+    display: "14 inch Full HD",
+    condition: "Normal",
+    status: "Ready",
+    image: "/products/lenovo-thinkpad-x1-carbon.jpg",
+    description:
+      "ThinkPad X1 Carbon dengan body ringan, keyboard nyaman, performa stabil, cocok untuk kerja kantor, bisnis, dan produktivitas.",
+  },
+  {
+    id: 3,
+    slug: "asus-vivobook-14-ryzen-5",
+    name: "ASUS VivoBook 14 Ryzen 5",
+    brand: "ASUS",
+    price: 5600000,
+    processor: "AMD Ryzen 5",
+    ram: "8GB",
+    storage: "512GB SSD",
+    display: "14 inch Full HD",
+    condition: "Mulus",
+    status: "Ready",
+    image: "/products/asus-vivobook-14-ryzen-5.jpg",
+    description:
+      "ASUS VivoBook 14 dengan Ryzen 5, desain modern, performa responsif, cocok untuk pelajar, kerja online, dan multitasking ringan.",
+  },
+  {
+    id: 4,
+    slug: "hp-elitebook-840-g6",
+    name: "HP EliteBook 840 G6",
+    brand: "HP",
+    price: 6100000,
+    processor: "Intel Core i5 Gen 8",
+    ram: "8GB",
+    storage: "256GB SSD",
+    display: "14 inch Full HD",
+    condition: "Minus Ringan",
+    status: "Sold",
+    image: "/products/hp-elitebook-840-g6.jpg",
+    description:
+      "HP EliteBook 840 G6 bekas kantor, performa masih bagus, terdapat minus ringan pemakaian, cocok untuk kebutuhan kerja harian.",
+  },
+]

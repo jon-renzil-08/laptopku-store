@@ -1,0 +1,182 @@
+"use client";
+
+import Link from "next/link";
+import { usePathname } from "next/navigation";
+import LogoutButton from "@/components/admin/LogoutButton";
+import { Toaster } from "sonner";
+
+const navLinks = [
+  {
+    href: "/admin",
+    label: "Dashboard",
+    icon: (
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        className="h-4 w-4"
+        fill="none"
+        viewBox="0 0 24 24"
+        stroke="currentColor"
+      >
+        <path
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          strokeWidth={2}
+          d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"
+        />
+      </svg>
+    ),
+  },
+  {
+    href: "/admin/products",
+    label: "Products",
+    icon: (
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        className="h-4 w-4"
+        fill="none"
+        viewBox="0 0 24 24"
+        stroke="currentColor"
+      >
+        <path
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          strokeWidth={2}
+          d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"
+        />
+      </svg>
+    ),
+  },
+];
+
+export default function AdminLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
+  const pathname = usePathname();
+
+  return (
+    <div className="min-h-screen bg-slate-50">
+      {/* Sidebar */}
+      <aside className="fixed left-0 top-0 hidden h-screen w-64 border-r border-slate-200 bg-white p-6 shadow-sm md:flex md:flex-col">
+        {/* Logo */}
+        <Link href="/admin" className="flex items-center gap-2">
+          <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-[#b95410]">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              className="h-4 w-4 text-white"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2.5}
+                d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"
+              />
+            </svg>
+          </div>
+          <span className="text-lg font-black text-slate-900">
+            Laptopku<span className="text-[#b95410]">.</span>
+          </span>
+        </Link>
+
+        {/* Label */}
+        <p className="mt-6 mb-3 text-[10px] font-bold uppercase tracking-widest text-slate-400">
+          Menu
+        </p>
+
+        {/* Nav */}
+        <nav className="space-y-1">
+          {navLinks.map((link) => {
+            const isActive =
+              link.href === "/admin"
+                ? pathname === "/admin"
+                : pathname.startsWith(link.href);
+
+            return (
+              <Link
+                key={link.href}
+                href={link.href}
+                className={[
+                  "flex items-center gap-3 rounded-xl px-4 py-2.5 text-sm font-semibold transition-all",
+                  isActive
+                    ? "bg-orange-50 text-[#b95410] shadow-sm"
+                    : "text-slate-500 hover:bg-slate-100 hover:text-slate-900",
+                ].join(" ")}
+              >
+                <span
+                  className={isActive ? "text-[#b95410]" : "text-slate-400"}
+                >
+                  {link.icon}
+                </span>
+                {link.label}
+                {isActive && (
+                  <span className="ml-auto h-1.5 w-1.5 rounded-full bg-[#b95410]" />
+                )}
+              </Link>
+            );
+          })}
+        </nav>
+
+        {/* Divider */}
+        <div className="mt-auto">
+          <div className="mb-4 border-t border-slate-100" />
+
+          {/* View Website */}
+          <Link
+            href="/"
+            target="_blank"
+            className="flex items-center gap-3 rounded-xl px-4 py-2.5 text-sm font-semibold text-slate-500 transition hover:bg-slate-100 hover:text-slate-900"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              className="h-4 w-4 text-slate-400"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"
+              />
+            </svg>
+            View Website
+          </Link>
+        </div>
+      </aside>
+
+      {/* Main */}
+      <div className="md:pl-64">
+        {/* Header */}
+        <header className="sticky top-0 z-40 border-b border-slate-200 bg-white/80 px-6 py-4 backdrop-blur-xl">
+          <div className="flex items-center justify-between">
+            <div>
+              <p className="text-sm font-black text-slate-900">
+                Admin Dashboard
+              </p>
+              <p className="text-xs text-slate-400">Laptopku Store</p>
+            </div>
+
+            <div className="flex items-center gap-3">
+              {/* Avatar */}
+              <div className="flex h-8 w-8 items-center justify-center rounded-full bg-orange-100 text-xs font-bold text-[#b95410]">
+                A
+              </div>
+              <LogoutButton />
+            </div>
+          </div>
+        </header>
+
+        {/* Content */}
+        <main className="p-4 md:p-8">
+          {children}
+          <Toaster richColors position="top-right" />
+        </main>
+      </div>
+    </div>
+  );
+}

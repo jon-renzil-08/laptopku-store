@@ -1,0 +1,441 @@
+"use client";
+
+import { useState, useRef } from "react";
+
+import { useRouter } from "next/navigation";
+import { supabase } from "@/lib/supabase";
+import { toast } from "sonner";
+import ImageUpload from "@/components/admin/ImageUpload";
+import Spinner from "@/components/ui/Spinner";
+
+// ── helpers & sub-components di LUAR fungsi utama ──
+
+function generateSlug(name: string) {
+  return name
+    .toLowerCase()
+    .trim()
+    .replace(/[^a-z0-9\s-]/g, "")
+    .replace(/\s+/g, "-");
+}
+
+async function generateUniqueSlug(baseName: string): Promise<string> {
+  const baseSlug = generateSlug(baseName);
+
+  const { data } = await supabase
+    .from("products")
+    .select("slug")
+    .ilike("slug", `${baseSlug}%`);
+
+  if (!data || data.length === 0) return baseSlug;
+
+  const slugs = data.map((p) => p.slug);
+  let counter = 2;
+  let candidateSlug = `${baseSlug}-${counter}`;
+
+  while (slugs.includes(candidateSlug)) {
+    counter++;
+    candidateSlug = `${baseSlug}-${counter}`;
+  }
+
+  return candidateSlug;
+}
+
+const inputCls =
+  "w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm text-slate-900 outline-none placeholder:text-slate-400 transition focus:border-[#b95410]/40 focus:bg-white focus:ring-2 focus:ring-[#b95410]/10";
+
+const selectCls =
+  "w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm text-slate-900 outline-none transition focus:border-[#b95410]/40 focus:bg-white focus:ring-2 focus:ring-[#b95410]/10 cursor-pointer";
+
+function Field({
+  label,
+  hint,
+  required,
+  children,
+}: {
+  label: string;
+  hint?: string;
+  required?: boolean;
+  children: React.ReactNode;
+}) {
+  return (
+    <div className="space-y-1.5">
+      <label className="flex items-center gap-1 text-xs font-bold uppercase tracking-widest text-slate-500">
+        {label}
+        {required && <span className="text-[#b95410]">*</span>}
+      </label>
+      {children}
+      {hint && <p className="text-xs text-slate-400">{hint}</p>}
+    </div>
+  );
+}
+
+function SectionHeader({
+  number,
+  title,
+  desc,
+}: {
+  number: string;
+  title: string;
+  desc: string;
+}) {
+  return (
+    <div className="flex items-start gap-4 border-b border-slate-100 pb-4">
+      <div className="flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-full bg-orange-50 text-xs font-black text-[#b95410]">
+        {number}
+      </div>
+      <div>
+        <p className="font-bold text-slate-900">{title}</p>
+        <p className="text-xs text-slate-400">{desc}</p>
+      </div>
+    </div>
+  );
+}
+
+// ── main component — hanya SATU export default ──
+
+export default function ProductForm() {
+  const router = useRouter();
+  const [loading, setLoading] = useState(false);
+  const [name, setName] = useState("");
+  const [slug, setSlug] = useState("");
+  const [price, setPrice] = useState("");
+  const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  function handleNameChange(e: React.ChangeEvent<HTMLInputElement>) {
+    const val = e.target.value;
+    setName(val);
+    setSlug(generateSlug(val));
+
+    if (debounceRef.current) clearTimeout(debounceRef.current);
+    debounceRef.current = setTimeout(async () => {
+      if (!val.trim()) return;
+      const uniqueSlug = await generateUniqueSlug(val);
+      setSlug(uniqueSlug);
+    }, 500);
+  }
+
+
+  async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    setLoading(true);
+
+    const formData = new FormData(event.currentTarget);
+
+    const product = {
+      name: String(formData.get("name")),
+      brand: String(formData.get("brand")),
+      price: Number(formData.get("price")),
+      processor: String(formData.get("processor")),
+      ram: String(formData.get("ram")),
+      storage: String(formData.get("storage")),
+      condition: String(formData.get("condition")),
+      status: String(formData.get("status")),
+      image_url: String(formData.get("image_url")),
+      whatsapp: String(formData.get("whatsapp")),
+      slug: String(formData.get("slug")),
+      description: String(formData.get("description")),
+      display: String(formData.get("display")),
+    };
+
+    const { error } = await supabase.from("products").insert(product);
+
+    setLoading(false);
+
+    if (error) {
+      toast.error(error.message);
+      return;
+    }
+
+    toast.success("Produk berhasil ditambahkan!");
+    router.push("/admin/products");
+    router.refresh();
+  }
+
+  return (
+    <form onSubmit={handleSubmit} className="space-y-8">
+      {/* ── SECTION 1: Info Umum ── */}
+      <div className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm space-y-5">
+        <SectionHeader
+          number="1"
+          title="Informasi Umum"
+          desc="Nama produk, brand, harga, dan status ketersediaan."
+        />
+
+        <div className="grid gap-5 sm:grid-cols-2">
+          <div className="sm:col-span-2">
+            <Field
+              label="Nama Produk"
+              required
+              hint="Contoh: Lenovo ThinkPad X1 Carbon Gen 10"
+            >
+              <input
+                name="name"
+                value={name}
+                onChange={handleNameChange}
+                placeholder="Lenovo ThinkPad X1 Carbon Gen 10"
+                required
+                className={inputCls}
+              />
+            </Field>
+          </div>
+
+          <Field label="Brand" required>
+            <select name="brand" defaultValue="" required className={selectCls}>
+              <option value="" disabled>
+                Pilih brand...
+              </option>
+              {[
+                "Lenovo",
+                "ASUS",
+                "HP",
+                "Dell",
+                "Acer",
+                "Apple",
+                "MSI",
+                "Samsung",
+                "Microsoft",
+                "Toshiba",
+                "Sony",
+              ].map((b) => (
+                <option key={b} value={b}>
+                  {b}
+                </option>
+              ))}
+            </select>
+          </Field>
+
+          <Field
+            label="Harga (Rp)"
+            required
+            hint="Harga dalam Rupiah, tanpa titik/koma"
+          >
+            <div className="relative">
+              <span className="absolute left-4 top-1/2 -translate-y-1/2 text-sm font-bold text-slate-400">
+                Rp
+              </span>
+              <input
+                name="price"
+                type="number"
+                value={price}
+                onChange={(e) => setPrice(e.target.value)}
+                placeholder="5000000"
+                required
+                min={0}
+                className={`${inputCls} pl-10`}
+              />
+            </div>
+            {price && (
+              <p className="mt-1 text-xs font-semibold text-[#b95410]">
+                {Number(price).toLocaleString("id-ID", {
+                  style: "currency",
+                  currency: "IDR",
+                  maximumFractionDigits: 0,
+                })}
+              </p>
+            )}
+          </Field>
+
+          <Field label="Kondisi" required>
+            <select
+              name="condition"
+              defaultValue=""
+              required
+              className={selectCls}
+            >
+              <option value="" disabled>
+                Pilih kondisi...
+              </option>
+              <option value="Bekas - Sangat Baik">Bekas - Sangat Baik</option>
+              <option value="Bekas - Baik">Bekas - Baik</option>
+              <option value="Bekas - Normal">Bekas - Normal</option>
+              <option value="Baru">Baru</option>
+            </select>
+          </Field>
+
+          <Field label="Status" required>
+            <select
+              name="status"
+              defaultValue="Tersedia"
+              required
+              className={selectCls}
+            >
+              <option value="Tersedia">Tersedia</option>
+              <option value="Terjual">Terjual</option>
+              <option value="Reserved">Reserved</option>
+            </select>
+          </Field>
+        </div>
+      </div>
+
+      {/* ── SECTION 2: Spesifikasi ── */}
+      <div className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm space-y-5">
+        <SectionHeader
+          number="2"
+          title="Spesifikasi Teknis"
+          desc="Detail hardware laptop yang akan ditampilkan ke pembeli."
+        />
+
+        <div className="grid gap-5 sm:grid-cols-2">
+          <Field label="Processor" required hint="Contoh: Intel Core i7-1165G7">
+            <input
+              name="processor"
+              placeholder="Intel Core i7-1165G7"
+              required
+              className={inputCls}
+            />
+          </Field>
+
+          <Field label="RAM" required>
+            <select name="ram" defaultValue="" required className={selectCls}>
+              <option value="" disabled>
+                Pilih RAM...
+              </option>
+              {["4GB", "8GB", "16GB", "32GB", "64GB"].map((r) => (
+                <option key={r} value={r}>
+                  {r}
+                </option>
+              ))}
+            </select>
+          </Field>
+
+          <Field label="Storage" required>
+            <select
+              name="storage"
+              defaultValue=""
+              required
+              className={selectCls}
+            >
+              <option value="" disabled>
+                Pilih storage...
+              </option>
+              {[
+                "128GB SSD",
+                "256GB SSD",
+                "512GB SSD",
+                "1TB SSD",
+                "256GB HDD",
+                "500GB HDD",
+                "1TB HDD",
+              ].map((s) => (
+                <option key={s} value={s}>
+                  {s}
+                </option>
+              ))}
+            </select>
+          </Field>
+
+          <Field label="Display" required hint="Contoh: 14 inch FHD IPS">
+            <input
+              name="display"
+              placeholder="14 inch FHD IPS 1920x1080"
+              required
+              className={inputCls}
+            />
+          </Field>
+        </div>
+
+        <Field
+          label="Deskripsi Produk"
+          required
+          hint="Ceritakan kondisi, kelengkapan, dan keunggulan produk ini"
+        >
+          <textarea
+            name="description"
+            placeholder="Laptop ini dalam kondisi sangat baik, tidak ada goresan. Baterai masih 85%. Kelengkapan: charger original, dus..."
+            rows={5}
+            required
+            className={`${inputCls} resize-none`}
+          />
+        </Field>
+      </div>
+
+      {/* ── SECTION 3: Foto ── */}
+      <div className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm space-y-5">
+        <SectionHeader
+          number="3"
+          title="Foto Produk"
+          desc="Upload foto utama laptop. Foto bagus = pembeli lebih percaya."
+        />
+        <ImageUpload />
+      </div>
+
+      {/* ── SECTION 4: Pengaturan ── */}
+      <div className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm space-y-5">
+        <SectionHeader
+          number="4"
+          title="Pengaturan & Kontak"
+          desc="Slug URL dan nomor WhatsApp untuk dihubungi pembeli."
+        />
+
+        <div className="grid gap-5 sm:grid-cols-2">
+          <Field label="Slug URL" required hint="Otomatis generate dari nama produk.">
+  <div className="relative">
+    <span className="absolute left-4 top-1/2 -translate-y-1/2 text-xs text-slate-400 select-none">
+      /products/
+    </span>
+    <input
+      name="slug"
+      value={slug}
+      readOnly                         
+      placeholder="otomatis dari nama..."
+      required
+      className={`${inputCls} pl-24 cursor-not-allowed bg-slate-100 text-slate-400 select-none`}
+    />
+  </div>
+</Field>
+
+          <Field
+            label="Nomor WhatsApp"
+            required
+            hint="Format internasional. Contoh: 628123456789"
+          >
+            <input
+              name="whatsapp"
+              placeholder="628123456789"
+              required
+              className={inputCls}
+            />
+          </Field>
+        </div>
+      </div>
+
+      {/* ── Submit ── */}
+      <div className="flex items-center justify-between rounded-2xl border border-slate-200 bg-white px-6 py-4 shadow-sm">
+        <p className="text-xs text-slate-400">
+          Field bertanda <span className="font-bold text-[#b95410]">*</span>{" "}
+          wajib diisi
+        </p>
+        <button
+          type="submit"
+          disabled={loading}
+          className="group inline-flex items-center gap-2 rounded-full bg-[#b95410] px-7 py-3 text-sm font-bold text-white shadow-lg shadow-orange-200 transition-all hover:-translate-y-0.5 hover:brightness-110 disabled:cursor-not-allowed disabled:opacity-60 disabled:hover:translate-y-0"
+        >
+          {loading ? (
+            <>
+              <Spinner />
+              Menyimpan...
+            </>
+          ) : (
+            <>
+              Simpan Produk
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                className="h-4 w-4 transition-transform group-hover:translate-x-1"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M13 7l5 5m0 0l-5 5m5-5H6"
+                />
+              </svg>
+            </>
+          )}
+        </button>
+      </div>
+    </form>
+  );
+}
