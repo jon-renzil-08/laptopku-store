@@ -32,8 +32,7 @@ export default function ProductGallery({
           height={700}
           priority
           loading="eager"
-          quality={82}
-          sizes="64px"
+          sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
           className="h-[360px] w-full object-cover transition duration-500 sm:h-[460px]"
         />
 
