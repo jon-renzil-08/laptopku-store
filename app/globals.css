@@ -239,6 +239,13 @@ summary {
   border-bottom-right-radius: 0.55rem;
 }
 
+
+img {
+  width: auto;
+  height: auto;
+}
+
+
 @keyframes hero-glow-shift {
   0%,
   100% {

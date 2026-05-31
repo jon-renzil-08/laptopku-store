@@ -51,8 +51,9 @@ export default function ImageUpload({ defaultValue = "" }: Props) {
           <Image
             src={imageUrl}
             alt="Product preview"
-            fill 
-            sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+            fill
+            loading="eager"
+            sizes="(max-width: 768px) 100vw, 300px"
             className="object-cover"
           />
         </div>

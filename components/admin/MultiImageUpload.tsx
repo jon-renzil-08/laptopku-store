@@ -94,7 +94,7 @@ export default function MultiImageUpload({
                   src={url}
                   alt="Product gallery"
                   fill
-                  sizes="64px"
+                  sizes="(max-width: 768px) 50vw, (max-width: 1200px) 33vw, 25vw"
                   className="object-cover"
                 />
               </div>

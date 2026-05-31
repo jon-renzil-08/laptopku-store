@@ -26,10 +26,7 @@ export default function ProductMarquee({ products }: Props) {
 
   return (
     <div className="relative mx-auto mt-32 max-w-7xl overflow-hidden rounded-[2rem] border border-transparent bg-transparent p-3 ">
-      {/* Fade kiri */}
-      <div className="pointer-events-none absolute inset-y-0 left-0 z-10 w-16 bg-gradient-to-r from-white/80 to-transparent" />
-      {/* Fade kanan */}
-      <div className="pointer-events-none absolute inset-y-0 right-0 z-10 w-16 bg-gradient-to-l from-white/80 to-transparent" />
+      
 
       <div className="marquee-track flex gap-5 sm:gap-6">
         {items.map((product, index) => (
@@ -53,7 +50,7 @@ export default function ProductMarquee({ products }: Props) {
                 src={product.image_url}
                 alt={product.name}
                 fill
-                sizes="64px"
+                sizes="100"
                 className="object-cover transition duration-500 group-hover:scale-105"
               />
             </div>
