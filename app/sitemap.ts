@@ -1,10 +1,10 @@
 import type { MetadataRoute } from "next";
-import { products } from "@/data/products";
+import { defaultProducts } from "@/data/defaultProducts";
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const baseUrl = "https://laptopkustore.com";
 
-  const productUrls = products.map((product) => ({
+  const productUrls = defaultProducts.map((product) => ({
     url: `${baseUrl}/products/${product.slug}`,
     lastModified: new Date(),
   }));

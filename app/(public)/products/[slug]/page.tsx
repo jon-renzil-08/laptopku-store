@@ -7,6 +7,7 @@ import { formatPrice } from "@/lib/formatPrice";
 import { supabase } from "@/lib/supabase";
 import StickyBar from "@/components/StickyBar";
 import ProductGallery from "@/components/ProductGallery";
+import { defaultProducts } from "@/data/defaultProducts";
 
 type ProductDetailPageProps = {
   params: Promise<{
@@ -19,13 +20,21 @@ async function getProductBySlug(slug: string) {
     .from("products")
     .select("*")
     .eq("slug", slug)
-    .single();
+    .maybeSingle();
 
-  if (error || !data) {
-    return null;
+  if (data) {
+    return data;
+  }
+  
+  
+  const defaultProduct = defaultProducts.find((product) => product.slug === slug);
+  
+  if(defaultProduct) {
+    return defaultProduct;
   }
 
-  return data;
+  return null;
+
 }
 
 async function getRelatedProducts(currentSlug: string, brand: string) {

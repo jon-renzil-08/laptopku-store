@@ -6,7 +6,7 @@ import Link from "next/link";
 import { formatPrice } from "@/lib/formatPrice";
 
 type Product = {
-  id: string;
+  id: number;
   slug: string;
   name: string;
   image_url: string;

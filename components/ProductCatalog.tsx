@@ -5,13 +5,15 @@ import Link from "next/link";
 import { useMemo, useState, useEffect } from "react";
 import { formatPrice } from "@/lib/formatPrice";
 import { supabase } from "@/lib/supabase";
+import { defaultProducts } from "@/data/defaultProducts";
+
 
 const controlClass =
   "h-12 rounded-full border border-slate-900/10 bg-white px-5  w-full text-sm font-medium text-slate-800 shadow-sm outline-none transition focus:border-orange-300 focus:ring-4 focus:ring-orange-100";
 
 export default function ProductCatalog() {
   type Product = {
-    id: string;
+    id: number;
     name: string;
     brand: string;
     price: number;
@@ -20,13 +22,15 @@ export default function ProductCatalog() {
     storage: string;
     status: string;
     image_url: string;
+    images: string[];
     slug: string;
     condition: string;
     display: string;
     description: string;
     whatsapp: string;
-    created_at: string;
   };
+
+  
 
   const [products, setProducts] = useState<Product[]>([]);
   const [search, setSearch] = useState("");
@@ -46,10 +50,15 @@ export default function ProductCatalog() {
 
       if (error) {
         console.error(error.message);
+        setProducts(defaultProducts);
         return;
       }
 
-      setProducts(data ?? []);
+      if (data && data.length > 0) {
+        setProducts(data);
+      } else {
+        setProducts(defaultProducts);
+      }
     }
 
     getProducts();

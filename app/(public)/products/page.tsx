@@ -49,7 +49,7 @@ export default function ProductsPage() {
         <WhatsAppGeneral className="w-full md:w-auto" />
       </section>
 
-      <ProductCatalog />
+      <ProductCatalog  />
     </main>
   );
 }

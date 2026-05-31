@@ -5,6 +5,7 @@ import Link from "next/link";
 import { Search } from "lucide-react";
 import { useEffect, useState } from "react";
 import { formatPrice } from "@/lib/formatPrice";
+import { defaultProducts } from "@/data/defaultProducts";
 
 type Product = {
   id: number;
@@ -24,27 +25,40 @@ export default function NavbarSearch() {
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-  const keyword = query.trim();
-  
-  const timeout = setTimeout(async () => {
-  if (keyword.length < 2) {
-    setProducts([]);
-    return;
-  }
+    const keyword = query.trim();
 
-    setLoading(true);
+    const timeout = setTimeout(
+      async () => {
+        if (keyword.length < 2) {
+          setProducts([]);
+          return;
+        }
 
-    const response = await fetch(
-      `/api/search?q=${encodeURIComponent(keyword)}`,
+        setLoading(true);
+
+        const response = await fetch(
+          `/api/search?q=${encodeURIComponent(keyword)}`,
+        );
+        const data = await response.json();
+        if (Array.isArray(data) && data.length > 0) {
+          setProducts(data);
+        } else {
+          const fallback = defaultProducts.filter(
+            (product) =>
+              product.name.toLowerCase().includes(keyword.toLowerCase()) ||
+              product.brand.toLowerCase().includes(keyword.toLowerCase()),
+          );
+
+          setProducts(fallback);
+        }
+        setProducts(Array.isArray(data) ? data : []);
+        setLoading(false);
+      },
+      keyword.length >= 2 ? 300 : 0,
     );
-    const data = await response.json();
 
-    setProducts(Array.isArray(data) ? data : []);
-    setLoading(false);
-  }, keyword.length >= 2 ? 300 : 0);
-
-  return () => clearTimeout(timeout);
-}, [query]);
+    return () => clearTimeout(timeout);
+  }, [query]);
 
   return (
     <div className="relative w-full md:flex-1 md:max-w-xl ">

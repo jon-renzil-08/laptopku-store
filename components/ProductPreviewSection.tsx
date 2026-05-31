@@ -2,17 +2,19 @@ import Image from "next/image";
 import Link from "next/link";
 import { formatPrice } from "@/lib/formatPrice";
 import { supabase } from "@/lib/supabase";
+import { defaultProducts } from "@/data/defaultProducts";
 
 export default async function ProductPreviewSection() {
-  const { data: previewProducts, error } = await supabase
-    .from("products")
-    .select("*")
-    .order("created_at", { ascending: false })
-    .limit(4);
+  const { data, error } = await supabase
+  .from("products")
+  .select("*")
+  .order("created_at", { ascending: false })
+  .limit(4);
 
-  if (error || !previewProducts || previewProducts.length === 0) {
-    return null;
-  }
+const previewProducts =
+  !error && data && data.length > 0
+    ? data
+    : defaultProducts.slice(0, 6);
 
   return (
     <section className="mx-auto max-w-7xl w-full px-4 py-16 sm:py-20">

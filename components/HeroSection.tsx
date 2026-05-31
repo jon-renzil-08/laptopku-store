@@ -4,17 +4,19 @@ import Link from "next/link";
 import { supabase } from "@/lib/supabase";
 import HeroCarousel from "./HeroCarousel";
 import ProductMarquee from "./ProductMarquee";
+import { defaultProducts } from "@/data/defaultProducts";
 
 export default async function HeroSection() {
-  const { data: products, error } = await supabase
-    .from("products")
-    .select("*")
-    .order("created_at", { ascending: false })
-    .limit(4);
+  const { data, error } = await supabase
+  .from("products")
+  .select("*")
+  .order("created_at", { ascending: false })
+  .limit(4);
 
-  if (error || !products || products.length === 0) {
-    return null;
-  }
+const products =
+  !error && data && data.length > 0
+    ? data
+    : defaultProducts.slice(0, 10);
 
   const availableProducts = products.filter(
     (product) => product.status === "Tersedia",
