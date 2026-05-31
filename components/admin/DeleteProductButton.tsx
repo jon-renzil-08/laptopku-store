@@ -26,15 +26,24 @@ export default function DeleteProductButton({
       .delete()
       .eq("id", productId);
 
-    setLoading(false);
-
     if (error) {
+      setLoading(false);
       toast.error(error.message);
       return;
     }
 
+    // Revalidate cache setelah penghapusan berhasil
+    await fetch ("/api/revalidate", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ paths: ["/admin/products", "/products", "/"] }),
+    });
+
     toast.success("Produk berhasil dihapus!");
     setShowModal(false);
+    setLoading(false);
     router.refresh();
   }
 

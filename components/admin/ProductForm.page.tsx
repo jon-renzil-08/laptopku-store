@@ -147,6 +147,14 @@ export default function ProductForm() {
       return;
     }
 
+    await fetch("/api/revalidate", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        paths: ["/admin/products", "/products", "/"],
+      }),
+    });
+    
     toast.success("Produk berhasil ditambahkan!");
     router.push("/admin/products");
     router.refresh();

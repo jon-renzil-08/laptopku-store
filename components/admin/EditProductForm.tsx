@@ -19,7 +19,10 @@ function generateSlug(name: string) {
     .replace(/\s+/g, "-");
 }
 
-async function generateUniqueSlugForEdit(baseName: string, currentId: string): Promise<string> {
+async function generateUniqueSlugForEdit(
+  baseName: string,
+  currentId: string,
+): Promise<string> {
   const baseSlug = generateSlug(baseName);
 
   const { data } = await supabase
@@ -30,9 +33,7 @@ async function generateUniqueSlugForEdit(baseName: string, currentId: string): P
   if (!data || data.length === 0) return baseSlug;
 
   // Exclude produk yang sedang diedit
-  const slugs = data
-    .filter((p) => p.id !== currentId)
-    .map((p) => p.slug);
+  const slugs = data.filter((p) => p.id !== currentId).map((p) => p.slug);
 
   if (!slugs.includes(baseSlug)) return baseSlug;
 
@@ -75,7 +76,15 @@ function Field({
   );
 }
 
-function SectionHeader({ number, title, desc }: { number: string; title: string; desc: string }) {
+function SectionHeader({
+  number,
+  title,
+  desc,
+}: {
+  number: string;
+  title: string;
+  desc: string;
+}) {
   return (
     <div className="flex items-start gap-4 border-b border-slate-100 pb-4">
       <div className="flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-full bg-orange-50 text-xs font-black text-[#b95410]">
@@ -121,12 +130,12 @@ export default function EditProductForm({ product }: { product: Product }) {
     setName(val);
     setSlug(generateSlug(val));
 
-   if (debounceRef.current) clearTimeout(debounceRef.current);
-   debounceRef.current = setTimeout(async () => {
-  if (!val.trim()) return;
-  const uniqueSlug = await generateUniqueSlugForEdit(val, product.id); // ← pass product.id
-  setSlug(uniqueSlug);
-}, 600);
+    if (debounceRef.current) clearTimeout(debounceRef.current);
+    debounceRef.current = setTimeout(async () => {
+      if (!val.trim()) return;
+      const uniqueSlug = await generateUniqueSlugForEdit(val, product.id); // ← pass product.id
+      setSlug(uniqueSlug);
+    }, 600);
   }
 
   async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
@@ -163,7 +172,19 @@ export default function EditProductForm({ product }: { product: Product }) {
       toast.error(error.message);
       return;
     }
-
+    
+    await fetch("/api/revalidate", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        paths: [
+          "/admin/products",
+          "/products",
+          `/products/${slug}`, // ← revalidate halaman detail spesifik
+          "/",
+        ],
+      }),
+    });
     toast.success("Produk berhasil diupdate!");
     router.push("/admin/products");
     router.refresh();
@@ -171,14 +192,21 @@ export default function EditProductForm({ product }: { product: Product }) {
 
   return (
     <form onSubmit={handleSubmit} className="space-y-8">
-
       {/* ── SECTION 1: Info Umum ── */}
       <div className="space-y-5 rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
-        <SectionHeader number="1" title="Informasi Umum" desc="Nama produk, brand, harga, dan status ketersediaan." />
+        <SectionHeader
+          number="1"
+          title="Informasi Umum"
+          desc="Nama produk, brand, harga, dan status ketersediaan."
+        />
 
         <div className="grid gap-5 sm:grid-cols-2">
           <div className="sm:col-span-2">
-            <Field label="Nama Produk" required hint="Slug URL akan otomatis update mengikuti nama">
+            <Field
+              label="Nama Produk"
+              required
+              hint="Slug URL akan otomatis update mengikuti nama"
+            >
               <input
                 name="name"
                 value={name}
@@ -190,16 +218,41 @@ export default function EditProductForm({ product }: { product: Product }) {
           </div>
 
           <Field label="Brand" required>
-            <select name="brand" defaultValue={product.brand} required className={selectCls}>
-              {["Lenovo","ASUS","HP","Dell","Acer","Apple","MSI","Samsung","Microsoft","Toshiba","Sony"].map((b) => (
-                <option key={b} value={b}>{b}</option>
+            <select
+              name="brand"
+              defaultValue={product.brand}
+              required
+              className={selectCls}
+            >
+              {[
+                "Lenovo",
+                "ASUS",
+                "HP",
+                "Dell",
+                "Acer",
+                "Apple",
+                "MSI",
+                "Samsung",
+                "Microsoft",
+                "Toshiba",
+                "Sony",
+              ].map((b) => (
+                <option key={b} value={b}>
+                  {b}
+                </option>
               ))}
             </select>
           </Field>
 
-          <Field label="Harga (Rp)" required hint="Harga dalam Rupiah, tanpa titik/koma">
+          <Field
+            label="Harga (Rp)"
+            required
+            hint="Harga dalam Rupiah, tanpa titik/koma"
+          >
             <div className="relative">
-              <span className="absolute left-4 top-1/2 -translate-y-1/2 text-sm font-bold text-slate-400">Rp</span>
+              <span className="absolute left-4 top-1/2 -translate-y-1/2 text-sm font-bold text-slate-400">
+                Rp
+              </span>
               <input
                 name="price"
                 type="number"
@@ -212,13 +265,22 @@ export default function EditProductForm({ product }: { product: Product }) {
             </div>
             {price && (
               <p className="mt-1 text-xs font-semibold text-[#b95410]">
-                {Number(price).toLocaleString("id-ID", { style: "currency", currency: "IDR", maximumFractionDigits: 0 })}
+                {Number(price).toLocaleString("id-ID", {
+                  style: "currency",
+                  currency: "IDR",
+                  maximumFractionDigits: 0,
+                })}
               </p>
             )}
           </Field>
 
           <Field label="Kondisi" required>
-            <select name="condition" defaultValue={product.condition} required className={selectCls}>
+            <select
+              name="condition"
+              defaultValue={product.condition}
+              required
+              className={selectCls}
+            >
               <option value="Bekas - Sangat Baik">Bekas - Sangat Baik</option>
               <option value="Bekas - Baik">Bekas - Baik</option>
               <option value="Bekas - Normal">Bekas - Normal</option>
@@ -227,7 +289,12 @@ export default function EditProductForm({ product }: { product: Product }) {
           </Field>
 
           <Field label="Status" required>
-            <select name="status" defaultValue={product.status} required className={selectCls}>
+            <select
+              name="status"
+              defaultValue={product.status}
+              required
+              className={selectCls}
+            >
               <option value="Tersedia">Tersedia</option>
               <option value="Terjual">Terjual</option>
               <option value="Reserved">Reserved</option>
@@ -238,35 +305,75 @@ export default function EditProductForm({ product }: { product: Product }) {
 
       {/* ── SECTION 2: Spesifikasi ── */}
       <div className="space-y-5 rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
-        <SectionHeader number="2" title="Spesifikasi Teknis" desc="Detail hardware laptop yang akan ditampilkan ke pembeli." />
+        <SectionHeader
+          number="2"
+          title="Spesifikasi Teknis"
+          desc="Detail hardware laptop yang akan ditampilkan ke pembeli."
+        />
 
         <div className="grid gap-5 sm:grid-cols-2">
           <Field label="Processor" required hint="Contoh: Intel Core i7-1165G7">
-            <input name="processor" defaultValue={product.processor} required className={inputCls} />
+            <input
+              name="processor"
+              defaultValue={product.processor}
+              required
+              className={inputCls}
+            />
           </Field>
 
           <Field label="RAM" required>
-            <select name="ram" defaultValue={product.ram} required className={selectCls}>
-              {["4GB","8GB","16GB","32GB","64GB"].map((r) => (
-                <option key={r} value={r}>{r}</option>
+            <select
+              name="ram"
+              defaultValue={product.ram}
+              required
+              className={selectCls}
+            >
+              {["4GB", "8GB", "16GB", "32GB", "64GB"].map((r) => (
+                <option key={r} value={r}>
+                  {r}
+                </option>
               ))}
             </select>
           </Field>
 
           <Field label="Storage" required>
-            <select name="storage" defaultValue={product.storage} required className={selectCls}>
-              {["128GB SSD","256GB SSD","512GB SSD","1TB SSD","256GB HDD","500GB HDD","1TB HDD"].map((s) => (
-                <option key={s} value={s}>{s}</option>
+            <select
+              name="storage"
+              defaultValue={product.storage}
+              required
+              className={selectCls}
+            >
+              {[
+                "128GB SSD",
+                "256GB SSD",
+                "512GB SSD",
+                "1TB SSD",
+                "256GB HDD",
+                "500GB HDD",
+                "1TB HDD",
+              ].map((s) => (
+                <option key={s} value={s}>
+                  {s}
+                </option>
               ))}
             </select>
           </Field>
 
           <Field label="Display" required hint="Contoh: 14 inch FHD IPS">
-            <input name="display" defaultValue={product.display} required className={inputCls} />
+            <input
+              name="display"
+              defaultValue={product.display}
+              required
+              className={inputCls}
+            />
           </Field>
         </div>
 
-        <Field label="Deskripsi Produk" required hint="Ceritakan kondisi, kelengkapan, dan keunggulan produk ini">
+        <Field
+          label="Deskripsi Produk"
+          required
+          hint="Ceritakan kondisi, kelengkapan, dan keunggulan produk ini"
+        >
           <textarea
             name="description"
             defaultValue={product.description}
@@ -279,15 +386,29 @@ export default function EditProductForm({ product }: { product: Product }) {
 
       {/* ── SECTION 3: Foto ── */}
       <div className="space-y-5 rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
-        <SectionHeader number="3" title="Foto Produk" desc="Kosongkan jika tidak ingin mengganti foto." />
+        <SectionHeader
+          number="3"
+          title="Foto Produk"
+          desc="Kosongkan jika tidak ingin mengganti foto."
+        />
 
         {/* Preview foto saat ini */}
         {product.image_url && (
           <div className="flex items-center gap-4 rounded-xl border border-slate-200 bg-slate-50 p-3">
-            <Image src={product.image_url} loading="eager" alt={product.name} width={96} height={64} unoptimized className="rounded-lg object-cover" />
+            <Image
+              src={product.image_url}
+              loading="eager"
+              alt={product.name}
+              width={96}
+              height={64}
+              unoptimized
+              className="rounded-lg object-cover"
+            />
             <div>
               <p className="text-xs font-bold text-slate-700">Foto saat ini</p>
-              <p className="mt-0.5 text-xs text-slate-400">Upload foto baru untuk mengganti</p>
+              <p className="mt-0.5 text-xs text-slate-400">
+                Upload foto baru untuk mengganti
+              </p>
             </div>
           </div>
         )}
@@ -298,7 +419,11 @@ export default function EditProductForm({ product }: { product: Product }) {
 
       {/* ── SECTION 4: Pengaturan ── */}
       <div className="space-y-5 rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
-        <SectionHeader number="4" title="Pengaturan & Kontak" desc="Slug URL dan nomor WhatsApp." />
+        <SectionHeader
+          number="4"
+          title="Pengaturan & Kontak"
+          desc="Slug URL dan nomor WhatsApp."
+        />
 
         <div className="grid gap-5 sm:grid-cols-2">
           <Field label="Slug URL" hint="Otomatis update mengikuti nama produk.">
@@ -315,7 +440,11 @@ export default function EditProductForm({ product }: { product: Product }) {
             </div>
           </Field>
 
-          <Field label="Nomor WhatsApp" required hint="Format internasional. Contoh: 628123456789">
+          <Field
+            label="Nomor WhatsApp"
+            required
+            hint="Format internasional. Contoh: 628123456789"
+          >
             <input
               name="whatsapp"
               defaultValue={product.whatsapp}
@@ -329,7 +458,8 @@ export default function EditProductForm({ product }: { product: Product }) {
       {/* ── Submit ── */}
       <div className="flex items-center justify-between rounded-2xl border border-slate-200 bg-white px-6 py-4 shadow-sm">
         <p className="text-xs text-slate-400">
-          Field bertanda <span className="font-bold text-[#b95410]">*</span> wajib diisi
+          Field bertanda <span className="font-bold text-[#b95410]">*</span>{" "}
+          wajib diisi
         </p>
 
         <div className="flex gap-3">
@@ -354,15 +484,25 @@ export default function EditProductForm({ product }: { product: Product }) {
             ) : (
               <>
                 Update Produk
-                <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 transition-transform group-hover:translate-x-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="h-4 w-4 transition-transform group-hover:translate-x-1"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M13 7l5 5m0 0l-5 5m5-5H6"
+                  />
                 </svg>
               </>
             )}
           </button>
         </div>
       </div>
-
     </form>
   );
 }
