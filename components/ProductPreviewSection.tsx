@@ -37,7 +37,7 @@ export default async function ProductPreviewSection() {
           prefetch={false}
           className="w-fit rounded-full border border-slate-900/10 bg-white/80 px-5 py-3 text-sm font-semibold text-slate-900 shadow-sm backdrop-blur-xl transition hover:-translate-y-0.5 hover:bg-white"
         >
-          Lihat Semua Laptop Tersedia
+          Lihat semua produk
         </Link>
       </div>
 
@@ -47,21 +47,20 @@ export default async function ProductPreviewSection() {
             key={product.id}
             className="group overflow-hidden rounded-[1.75rem] border border-white/80 bg-white/75 shadow-xl shadow-slate-200/70 backdrop-blur-xl transition hover:-translate-y-1 hover:shadow-2xl hover:shadow-slate-200"
           >
-            <div className="relative h-56 overflow-hidden bg-slate-100">
+            
               <Image
                 src={product.image_url}
                 alt={product.name}
-                
                 width={900}
                 height={600}
                 loading="eager"
                 sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
-                className=" object-cover transition duration-500 group-hover:scale-105"
+                className="h-56 w-full object-cover transition duration-500 group-hover:scale-105"
               />
               <div className="absolute left-4 top-4 rounded-full bg-white/90 px-3 py-1 text-xs font-bold text-slate-800 shadow-sm backdrop-blur-xl">
                 {product.brand}
               </div>
-            </div>
+           
 
             <div className="p-5">
               <div className="flex items-center justify-between gap-3">
